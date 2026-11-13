@@ -1,0 +1,9 @@
+mi_rutina:
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    ret
