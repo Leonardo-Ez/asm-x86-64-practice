@@ -15,8 +15,6 @@ procesar:
 _start:
     mov rbx, 999
     call procesar
-    
-
     mov rdi, rbx
     mov rax, 60
     syscall
