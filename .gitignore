@@ -1,0 +1,7 @@
+# Binarios compilados (convención del curso: exe_<nombre>)
+exe_*
+*.o
+
+# Archivos generados al correr los ejercicios de syscalls (open/write/create)
+archivoCreado.txt
+archivito*
