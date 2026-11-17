@@ -70,7 +70,7 @@ PROGRAM_HEADER:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 	; aquí van los %include "subrutina.asm" (quedan ANTES del código principal)
-
+	%include "convertir.asm"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;INSTRUCTIONS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -81,18 +81,15 @@ START:				; aquí empieza a ejecutarse (lo dice e_entry en el header)
 	
 	cmp rax, 2; validamos que exista contenido, es con 2, por que también cuenta le argumento
 	;;de nombre de ejecutable
-	je _existeArgumentos
-	mov rdi, 0xff; si son diferentes entonces sale con 0xff
+	jne _noexisteArgumentos
+	mov rdi, [rsp+16]
+	call convertir
+	mov rdi, rax
 	mov rax, 60
 	syscall
-_existeArgumentos:
-	mov rbx, [rsp+16]; sacamos el puntero de dónde está el comienzo del argumento
-	mov al, [rbx]	;sacamos el contenido de donde apunta rbx 
-	;el contenido lo ponemos en al para considerar 1 byte, 1 caracter en assci
-	sub al, '0'
-	
-	xor rdi, rdi
-	mov dil, al;copiamos para la salida
+
+_noexisteArgumentos:
+	mov rdi, 0xff; si son diferentes entonces sale con 0xff
 	mov rax, 60
 	syscall
 END:
